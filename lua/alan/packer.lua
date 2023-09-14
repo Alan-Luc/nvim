@@ -75,6 +75,13 @@ return require('packer').startup(function(use)
 			{ 'hrsh7th/nvim-cmp' },  -- Required
 			{ 'hrsh7th/cmp-nvim-lsp' }, -- Required
 			{ 'L3MON4D3/LuaSnip' },  -- Required
+			-- Useful completion sources:
+			{ 'hrsh7th/cmp-nvim-lua' },
+			{ 'hrsh7th/cmp-nvim-lsp-signature-help' },
+			{ 'hrsh7th/cmp-vsnip' },
+			{ 'hrsh7th/cmp-path' },
+			{ 'hrsh7th/cmp-buffer' },
+			{ 'hrsh7th/vim-vsnip' },
 		}
 	}
 
@@ -135,4 +142,7 @@ return require('packer').startup(function(use)
 
 	-- formatter.nvim
 	use("mhartington/formatter.nvim")
+
+	-- kitty syntax highlighting
+	use("fladson/vim-kitty")
 end)

@@ -24,5 +24,4 @@ set.scrolloff = 10
 set.spelllang = 'en_ca'
 set.hlsearch = true
 set.incsearch = true
-set.termguicolors = true
 set.cursorline = true

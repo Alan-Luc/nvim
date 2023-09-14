@@ -4,9 +4,10 @@ lsp.preset("recommended")
 
 lsp.ensure_installed({
 	'eslint',
-	'solargraph',
-	'rubocop',
-	'sorbet',
+	'tsserver',
+	'pylsp',
+	'rust_analyzer',
+	'gopls',
 })
 
 -- Fix Undefined global 'vim'
@@ -63,6 +64,7 @@ lsp.format_on_save({
 	servers = {
 		['lua_ls'] = { 'lua' },
 		['rubocop'] = { 'ruby' },
+		['rust_analyzer'] = { 'rust' },
 		-- ['null-ls'] = { 'javascript', 'vue' },
 		-- if you have a working setup with null-ls
 		-- you can specify filetypes it can format.
