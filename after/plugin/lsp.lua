@@ -21,11 +21,17 @@ cmp.event:on(
 )
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_mappings = lsp.defaults.cmp_mappings({
-	['<S-Tab>'] = cmp.mapping.select_prev_item(cmp_select),
-	['<Tab>'] = cmp.mapping.select_next_item(cmp_select),
-	['<CR>'] = cmp.mapping.confirm({ select = true }),
-	["<C-y>"] = cmp.mapping.complete(),
+	-- ['<S-Tab>'] = cmp.mapping.select_prev_item(cmp_select),
+	-- ['<Tab>'] = cmp.mapping.select_next_item(cmp_select),
+	-- ['<CR>'] = cmp.mapping.confirm({ select = true }),
+	['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+	['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+	['<C-y>'] = cmp.mapping.confirm({ select = true }),
+	-- ['<C-Space>'] = cmp.mapping.complete(),
 })
+
+cmp_mappings['<Tab>'] = nil
+cmp_mappings['<S-Tab>'] = nil
 
 lsp.setup_nvim_cmp({
 	mapping = cmp_mappings
@@ -63,11 +69,6 @@ lsp.format_on_save({
 	},
 	servers = {
 		['lua_ls'] = { 'lua' },
-		['rubocop'] = { 'ruby' },
-		['rust_analyzer'] = { 'rust' },
-		-- ['null-ls'] = { 'javascript', 'vue' },
-		-- if you have a working setup with null-ls
-		-- you can specify filetypes it can format.
 	}
 })
 

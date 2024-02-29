@@ -117,13 +117,21 @@ return require('packer').startup(function(use)
 
 	use('haya14busa/is.vim')
 	use('ap/vim-css-color')
+	use {
+		'NvChad/nvim-colorizer.lua',
+		config = function()
+			require('colorizer').setup {
+				user_default_options = {
+					css = true,
+					rgb_fn = true,
+					hsl_fn = true,
+					css_fn = true,
+				}
+			}
+		end
+	}
 
 
-	-- null-ls
-	-- use("jose-elias-alvarez/null-ls.nvim")
-
-
-	-- neogit
 	use {
 		'NeogitOrg/neogit',
 		requires = {
@@ -140,9 +148,11 @@ return require('packer').startup(function(use)
 	-- vim visual multi
 	use("mg979/vim-visual-multi")
 
-	-- formatter.nvim
-	use("mhartington/formatter.nvim")
-
+	-- conform.nvim - null-ls replacement
+	use {
+		'stevearc/conform.nvim',
+		config = function() require('conform').setup() end
+	}
 	-- kitty syntax highlighting
 	use("fladson/vim-kitty")
 end)
