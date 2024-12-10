@@ -63,4 +63,5 @@ return {
 	'fladson/vim-kitty',
 	-- search and replace with a nice window
 	'cshuaimin/ssr.nvim',
+	'lambdalisue/fern.vim'
 }
