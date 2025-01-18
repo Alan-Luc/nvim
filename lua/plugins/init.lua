@@ -9,7 +9,7 @@ return {
 	},
 
 	-- undotree
-	'mbbill/undotree',
+	{ 'mbbill/undotree' },
 
 	-- t-pope
 	'tpope/vim-surround',
@@ -20,7 +20,7 @@ return {
 
 
 	-- to comment in vue or jsx where commenting differs between sections of the page
-	{ 'numToStr/Comment.nvim',  opts = {} },
+	{ 'numToStr/Comment.nvim', opts = {} },
 	-- gitsigns
 	'lewis6991/gitsigns.nvim',
 	-- QOL
@@ -63,5 +63,10 @@ return {
 	'fladson/vim-kitty',
 	-- search and replace with a nice window
 	'cshuaimin/ssr.nvim',
-	'lambdalisue/fern.vim'
+	'lambdalisue/fern.vim',
+
+	{
+		'nvim-treesitter/nvim-treesitter-context',
+		opts = {},
+	},
 }
