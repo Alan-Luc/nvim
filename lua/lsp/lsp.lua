@@ -73,9 +73,9 @@ return {
 				ensure_installed = {
 					"ts_ls",
 					"pyright",
-					"gopls",
+					-- "gopls",
 					"lua_ls",
-					"rust_analyzer",
+					-- "rust_analyzer",
 				},
 			})
 
@@ -85,7 +85,7 @@ return {
 					"prettierd",
 					"stylua",
 					"black",
-					"goimports",
+					-- "goimports",
 					"isort",
 				},
 			})
@@ -100,13 +100,13 @@ return {
 
 				-- LSP Keybindings
 				keymap("n", "gd", function() vim.lsp.buf.definition() end, opts)
+				keymap("n", "gr", function() vim.lsp.buf.references() end, opts)
 				keymap("n", "K", function() vim.lsp.buf.hover() end, opts)
 				keymap("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
 				keymap("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
 				keymap("n", "[d", function() vim.diagnostic.goto_next() end, opts)
 				keymap("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-				keymap("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-				keymap("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
+				keymap("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
 				keymap("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
 				keymap("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 			end

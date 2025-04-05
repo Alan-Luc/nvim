@@ -38,7 +38,8 @@ keymap("n", "<F12>", ":Neogit<CR>", opts)
 keymap("n", "<leader>t", ":Fern . -drawer -toggle<CR>", opts)
 
 --undo tree
-keymap('n', '<leader><F5>', vim.cmd.UndotreeToggle)
+keymap('n', '<F5>', vim.cmd.UndotreeToggle)
 -- " copy to clipboard and copy last yank to clipboard
 -- vim.keymap.set("x", <silent><F12> :!pbcopy <CR><CR>
 -- vim.keymap.set("n", <silent><F11> :call system('xclip -selection clipboard', @0)<CR>
+keymap('n', 'gr', function() require('goto-preview').goto_preview_references() end, opts)
