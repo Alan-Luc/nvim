@@ -9,10 +9,13 @@ return {
 		appearance = {
 			nerd_font_variant = 'mono'
 		},
-		completion = { documentation = { auto_show = true, auto_show_delay_ms = 1 } },
+		completion = {
+			documentation = { auto_show = true, auto_show_delay_ms = 1 },
+		},
 		sources = {
 			default = { 'lsp', 'path', 'snippets', 'buffer' },
 		},
+		signature = { enabled = true },
 		fuzzy = { implementation = "prefer_rust" }
 	},
 	opts_extend = { "sources.default" }
