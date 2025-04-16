@@ -28,5 +28,8 @@ return {
 				},
 			},
 		})
+		vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { bg = "#2a2a37", fg = "#363646" })
+		vim.api.nvim_set_hl(0, 'TelescopePromptNormal', { bg = "#2a2a37" })
+		vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = "#1f1f28" })
 	end,
 }

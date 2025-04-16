@@ -12,10 +12,9 @@ return {
 			ruby = { "rubocop" },
 		},
 		format_on_save = {
-			timeout_ms = 500,    -- Timeout for formatting on save
+			timeout_ms = 1000, -- Timeout for formatting on save
 			lsp_fallback = true, -- Use LSP formatting if no formatter is found
-			quiet = true,        -- Suppress unnecessary messages
+			quiet = true,     -- Suppress unnecessary messages
 		},
 	},
 }
-
