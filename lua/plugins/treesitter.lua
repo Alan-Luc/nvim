@@ -14,8 +14,8 @@ return {
 			auto_install = true,
 
 			highlight = {
-				enable = true,                         -- Enable syntax highlighting with tree-sitter
-				additional_vim_regex_highlighting = false, -- Disable regex-based highlighting
+				enable = true, -- Enable syntax highlighting with tree-sitter
+				-- additional_vim_regex_highlighting = false, -- Disable regex-based highlighting
 			},
 
 			indent = {

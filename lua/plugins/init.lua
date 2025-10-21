@@ -2,11 +2,13 @@ return {
 	-- kanagawa-paper
 	{
 		"thesimonho/kanagawa-paper.nvim",
+		-- "rebelot/kanagawa.nvim",
 		lazy = false,
 		priority = 1000,
 		opts = {},
 		config = function()
 			vim.cmd.colorscheme('kanagawa-paper-ink')
+			-- vim.cmd.colorscheme('kanagawa-dragon')
 			vim.cmd("highlight Normal guibg=#0a0c0d")
 		end
 	},
@@ -14,7 +16,7 @@ return {
 	{ 'mbbill/undotree' },
 	-- t-pope
 	'tpope/vim-surround',
-	'tpope/vim-vinegar',
+	-- 'tpope/vim-vinegar',
 	'tpope/vim-eunuch',
 	'tpope/vim-rails',
 	'tpope/vim-repeat',
@@ -23,9 +25,9 @@ return {
 	-- gitsigns
 	'lewis6991/gitsigns.nvim',
 	-- QOL
-	{ 'windwp/nvim-autopairs',                   opts = {} },
+	{ 'windwp/nvim-autopairs',  opts = {} },
 	-- autotags
-	-- { 'windwp/nvim-ts-autotag', opts = {} },
+	{ 'windwp/nvim-ts-autotag', opts = {} },
 	'haya14busa/is.vim',
 	{
 		'NvChad/nvim-colorizer.lua',
@@ -54,4 +56,22 @@ return {
 	{ 'nvim-treesitter/nvim-treesitter-context', opts = {}, },
 	'RRethy/nvim-treesitter-endwise',
 	-- { 'kevinhwang91/nvim-bqf',                   ft = 'qf' }
+	{ 'nvim-lua/plenary.nvim',                   lazy = false },
+	{
+		'stevearc/oil.nvim',
+		---@module 'oil'
+		---@type oil.SetupOpts
+		opts = {
+			view_options = {
+				show_hidden = true
+			}
+		},
+		-- Optional dependencies
+		-- dependencies = { { "echasnovski/mini.icons", opts = {} } },
+		dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+		lazy = false,
+	},
+	-- { 'lambdalisue/vim-fern' },
+	{ "0x00-ketsu/maximizer.nvim", opts = {}, },
+	{ "qvalentin/helm-ls.nvim",    ft = "helm", opts = {}, },
 }
