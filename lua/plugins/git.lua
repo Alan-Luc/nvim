@@ -21,10 +21,37 @@ return {
 		},
 		opts = {
 			disable_line_numbers = false,
+			kind = "floating",
+			popup = {
+				kind = "floating",
+			},
+			commit_editor = {
+				kind = "floating",
+			},
+			commit_select_view = {
+				kind = "floating",
+			},
+			commit_view = {
+				kind = "floating",
+			},
+			log_view = {
+				kind = "floating",
+			},
+			rebase_editor = {
+				kind = "floating",
+			},
+			reflog_view = {
+				kind = "floating",
+			},
+			merge_editor = {
+				kind = "floating",
+			},
+			preview_buffer = {
+				kind = "floating",
+			},
 		},
 		config = function(_, opts)
 			require("neogit").setup(opts)
-
 			-- Ensure line numbers are shown in neogit buffers
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = "Neogit*",
@@ -37,9 +64,7 @@ return {
 		keys = {
 			{
 				"<C-l>",
-				function()
-					require("neogit").open({ kind = "floating" })
-				end,
+				":Neogit<CR>",
 				desc = "Show Neogit UI",
 			},
 		},
