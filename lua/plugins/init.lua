@@ -7,30 +7,23 @@ return {
 		priority = 1000,
 		opts = {},
 		config = function()
-			vim.cmd.colorscheme('kanagawa-paper-ink')
+			vim.cmd.colorscheme("kanagawa-paper-ink")
 			-- vim.cmd.colorscheme('kanagawa-dragon')
 			vim.cmd("highlight Normal guibg=#0a0c0d")
-		end
+		end,
 	},
 	-- undotree
-	{ 'mbbill/undotree' },
+	{ "mbbill/undotree" },
 	-- t-pope
-	'tpope/vim-surround',
-	-- 'tpope/vim-vinegar',
-	'tpope/vim-eunuch',
-	'tpope/vim-rails',
-	'tpope/vim-repeat',
-	-- to comment in vue or jsx where commenting differs between sections of the page
-	{ 'numToStr/Comment.nvim', opts = {} },
-	-- gitsigns
-	'lewis6991/gitsigns.nvim',
-	-- QOL
-	{ 'windwp/nvim-autopairs',  opts = {} },
-	-- autotags
-	{ 'windwp/nvim-ts-autotag', opts = {} },
-	'haya14busa/is.vim',
+	"tpope/vim-surround",
+	"tpope/vim-fugitive",
+	"tpope/vim-eunuch",
+	"tpope/vim-repeat",
+	{ "numToStr/Comment.nvim", opts = {} },
+	{ "windwp/nvim-ts-autotag", opts = {} },
+	"haya14busa/is.vim",
 	{
-		'NvChad/nvim-colorizer.lua',
+		"NvChad/nvim-colorizer.lua",
 		opts = {
 			user_default_options = {
 				css = true,
@@ -40,38 +33,23 @@ return {
 			},
 		},
 	},
+	"mg979/vim-visual-multi",
+	"fladson/vim-kitty",
+	{ "nvim-treesitter/nvim-treesitter-context", opts = {} },
+	"RRethy/nvim-treesitter-endwise",
+	{ "nvim-lua/plenary.nvim", lazy = false },
 	{
-		'NeogitOrg/neogit',
-		dependencies = {
-			{ "nvim-lua/plenary.nvim" },      -- required
-			{ "nvim-telescope/telescope.nvim" }, -- optional
-			{ "sindrets/diffview.nvim" },     -- optional
-		},
-		opts = {},
-	},
-	-- vim visual multi
-	'mg979/vim-visual-multi',
-	-- kitty syntax highlighting
-	'fladson/vim-kitty',
-	{ 'nvim-treesitter/nvim-treesitter-context', opts = {}, },
-	'RRethy/nvim-treesitter-endwise',
-	-- { 'kevinhwang91/nvim-bqf',                   ft = 'qf' }
-	{ 'nvim-lua/plenary.nvim',                   lazy = false },
-	{
-		'stevearc/oil.nvim',
+		"stevearc/oil.nvim",
 		---@module 'oil'
 		---@type oil.SetupOpts
 		opts = {
 			view_options = {
-				show_hidden = true
-			}
+				show_hidden = true,
+			},
 		},
-		-- Optional dependencies
-		-- dependencies = { { "echasnovski/mini.icons", opts = {} } },
 		dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
 		lazy = false,
 	},
-	-- { 'lambdalisue/vim-fern' },
-	{ "0x00-ketsu/maximizer.nvim", opts = {}, },
-	{ "qvalentin/helm-ls.nvim",    ft = "helm", opts = {}, },
+	{ "0x00-ketsu/maximizer.nvim", opts = {} },
+	{ "qvalentin/helm-ls.nvim", ft = "helm", opts = {} },
 }

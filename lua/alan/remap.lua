@@ -8,7 +8,6 @@ keymap("n", "<leader>3", ":tabn<CR>", opts)
 keymap("n", "<leader>4", ":tabclose<CR>", opts)
 
 --  move up and down by a page and center cursor
---  ty primeagen
 keymap("n", "<C-d>", "<C-d>zz", opts)
 keymap("n", "<C-u>", "<C-u>zz", opts)
 keymap("n", "<S-j>", "mzJ`z", opts)
@@ -16,7 +15,7 @@ keymap("n", "<n>", "nzzzv", opts)
 keymap("n", "<N>", "Nzzzv", opts)
 -- keymap("x", '<leader>p', "\"_dP", opts)
 -- nice substitution
-keymap("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", opts)
+keymap("n", "<leader>h", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", { noremap = true })
 keymap("n", "<leader>x", "<cmd>!chmod +x %<CR>", opts)
 
 --  move lines up and down
@@ -32,10 +31,6 @@ keymap("n", "<leader>y", '"+Y', opts)
 keymap("i", "<C-S-v>", "<C-r>+", opts)
 keymap("x", "<C-S-v>", '"+p', opts)
 keymap("n", "<C-S-v>", '"+p', opts)
-
--- neogit
-keymap("n", "<F12>", ":Neogit<CR>", opts)
-keymap("n", "<leader>t", ":Fern . -drawer -toggle<CR>", opts)
 
 --undo tree
 keymap("n", "<F5>", vim.cmd.UndotreeToggle)
@@ -59,4 +54,3 @@ end, opts)
 
 keymap("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
 keymap("n", "<leader>vd", vim.diagnostic.open_float)
-keymap("n", "<leader>ca", vim.lsp.buf.code_action)

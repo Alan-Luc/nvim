@@ -29,4 +29,8 @@ return {
 		},
 		opts_extend = { "sources.default" },
 	},
+	vim.diagnostic.config({
+		virtual_text = { severity = { min = "INFO", max = "WARN" } },
+		virtual_lines = { current_line = true, severity = { min = "ERROR" } },
+	}),
 }
