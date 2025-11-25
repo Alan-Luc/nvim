@@ -52,4 +52,10 @@ return {
 	},
 	{ "0x00-ketsu/maximizer.nvim", opts = {} },
 	{ "qvalentin/helm-ls.nvim", ft = "helm", opts = {} },
+	{
+		"szw/vim-maximizer",
+		keys = {
+			{ "<leader>m", "<cmd>MaximizerToggle<cr>", desc = "toggle maximize current split" },
+		},
+	},
 }

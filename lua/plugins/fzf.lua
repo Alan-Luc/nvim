@@ -1,7 +1,7 @@
 return {
 	"ibhagwan/fzf-lua",
 	opts = {
-		{ "telescope", "fzf-native" },
+		{ "telescope", "default" },
 		fzf_opts = {
 			["--cycle"] = true,
 			["--wrap"] = true,
@@ -11,9 +11,37 @@ return {
 			rg_opts = "--sort-files --hidden --column --line-number --no-heading "
 				.. "--color=always --smart-case -g '!{.git,node_modules}/*'",
 		},
-		previewers = {
-			bat = {
-				theme = "ansi",
+		winopts = {
+			preview = {
+				horizontal = "right:60%",
+			},
+		},
+		files = {
+			actions = {
+				-- add file to buffer list without opening them (like :badd)
+				["ctrl-b"] = {
+					fn = function(selected, opts)
+						require("fzf-lua.actions").file_open_in_background(selected, opts)
+						local count = #selected
+						vim.notify(
+							string.format("Added %d file%s to buffers", count, count > 1 and "s" or ""),
+							vim.log.levels.INFO
+						)
+					end,
+					reload = true,
+				},
+			},
+		},
+		buffers = {
+			actions = {
+				["ctrl-x"] = {
+					fn = function(selected, opts)
+						require("fzf-lua.actions").buf_del(selected, opts)
+					end,
+					reload = true,
+				},
+				-- Disable ctrl-d to hide it from hints
+				["ctrl-d"] = false,
 			},
 		},
 	},
@@ -33,6 +61,7 @@ return {
 			function()
 				require("fzf-lua").live_grep_native({
 					fzf_cli_args = "--nth 2..",
+					resume = true,
 				})
 			end,
 			mode = "n",
@@ -75,7 +104,7 @@ return {
 			desc = "lsp type defs",
 		},
 		{
-			"<leader>g",
+			"<leader>b",
 			function()
 				require("fzf-lua").buffers()
 			end,
