@@ -43,5 +43,6 @@ return {
 	vim.diagnostic.config({
 		virtual_text = { severity = { min = "INFO", max = "WARN" } },
 		virtual_lines = { current_line = true, severity = { min = "ERROR" } },
+		float = { source = true },
 	}),
 }

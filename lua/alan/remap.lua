@@ -14,8 +14,6 @@ keymap("n", "<S-j>", "mzJ`z", opts)
 keymap("n", "<n>", "nzzzv", opts)
 keymap("n", "<N>", "Nzzzv", opts)
 -- keymap("x", '<leader>p', "\"_dP", opts)
--- nice substitution
-keymap("n", "<leader>h", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>", { noremap = true })
 keymap("n", "<leader>x", "<cmd>!chmod +x %<CR>", opts)
 
 --  move lines up and down

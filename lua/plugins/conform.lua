@@ -1,5 +1,22 @@
 return {
 	"stevearc/conform.nvim",
+	init = function()
+		-- Commands to toggle formatting
+		vim.api.nvim_create_user_command("FormatDisable", function(args)
+			if args.bang then
+				-- FormatDisable! disables for current buffer only
+				vim.b.disable_autoformat = true
+			else
+				-- FormatDisable disables globally
+				vim.g.disable_autoformat = true
+			end
+		end, { desc = "Disable autoformat-on-save", bang = true })
+
+		vim.api.nvim_create_user_command("FormatEnable", function()
+			vim.b.disable_autoformat = false
+			vim.g.disable_autoformat = false
+		end, { desc = "Enable autoformat-on-save" })
+	end,
 	opts = {
 		formatters_by_ft = {
 			-- Conform will run multiple formatters sequentially
@@ -17,10 +34,29 @@ return {
 			ruby = { "rubocop" },
 			lua = { "stylua" },
 		},
-		format_on_save = {
-			timeout_ms = 1000, -- Timeout for formatting on save
-			lsp_fallback = true, -- Use LSP formatting if no formatter is found
-			quiet = true, -- Suppress unnecessary messages
-		},
+		format_on_save = function(bufnr)
+			-- Check built-in disable flags
+			if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+				return
+			end
+
+			-- Directories where format_on_save should be disabled
+			local disabled_dirs = {
+				"/Users/alan.luc/dev/platform/nexus",
+			}
+
+			local bufname = vim.api.nvim_buf_get_name(bufnr)
+			for _, dir in ipairs(disabled_dirs) do
+				if bufname:match("^" .. vim.pesc(dir)) then
+					return nil -- Disable format_on_save for this buffer
+				end
+			end
+
+			return {
+				timeout_ms = 500,
+				lsp_fallback = true,
+				-- quiet = true,
+			}
+		end,
 	},
 }

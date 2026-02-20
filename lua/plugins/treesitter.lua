@@ -1,9 +1,9 @@
 return {
-	'nvim-treesitter/nvim-treesitter',
-	build = ':TSUpdate',                    -- Ensure parsers are updated automatically
-	event = { 'BufReadPost', 'BufNewFile' }, -- Lazy-load on file read
+	"nvim-treesitter/nvim-treesitter",
+	build = ":TSUpdate", -- Ensure parsers are updated automatically
+	event = { "BufReadPost", "BufNewFile" }, -- Lazy-load on file read
 	config = function()
-		require('nvim-treesitter.configs').setup {
+		require("nvim-treesitter.configs").setup({
 			-- Specify the parsers to ensure are installed
 			ensure_installed = { "javascript", "typescript", "ruby", "rust", "go", "vim", "vimdoc", "bash", "yaml" },
 
@@ -25,6 +25,6 @@ return {
 			autopairs = {
 				enable = true, -- Enable integration with nvim-autopairs
 			},
-		}
-	end
+		})
+	end,
 }

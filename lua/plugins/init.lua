@@ -15,10 +15,9 @@ return {
 	-- undotree
 	{ "mbbill/undotree" },
 	-- t-pope
-	"tpope/vim-surround",
-	"tpope/vim-fugitive",
-	"tpope/vim-eunuch",
-	"tpope/vim-repeat",
+	-- "tpope/vim-surround",
+	-- "tpope/vim-repeat",
+	{ "kylechui/nvim-surround", opts = {} },
 	{ "numToStr/Comment.nvim", opts = {} },
 	{ "windwp/nvim-ts-autotag", opts = {} },
 	"haya14busa/is.vim",
@@ -46,16 +45,29 @@ return {
 			view_options = {
 				show_hidden = true,
 			},
+			keymaps = {
+				["<leader>x"] = {
+					callback = function()
+						local entry = require("oil").get_cursor_entry()
+						if entry then
+							local dir = require("oil").get_current_dir()
+							local path = dir .. entry.name
+							vim.fn.system({ "chmod", "+x", path })
+							vim.notify("chmod +x " .. entry.name)
+						end
+					end,
+					desc = "Make file executable",
+				},
+			},
 		},
 		dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
 		lazy = false,
 	},
-	{ "0x00-ketsu/maximizer.nvim", opts = {} },
 	{ "qvalentin/helm-ls.nvim", ft = "helm", opts = {} },
 	{
 		"szw/vim-maximizer",
 		keys = {
-			{ "<leader>m", "<cmd>MaximizerToggle<cr>", desc = "toggle maximize current split" },
+			{ "<leader>m", "<cmd>MaximizerToggle!<CR>", desc = "toggle maximize current split" },
 		},
 	},
 }

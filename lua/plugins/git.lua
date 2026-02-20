@@ -22,6 +22,7 @@ return {
 		opts = {
 			disable_line_numbers = false,
 			kind = "floating",
+			auto_refresh = true,
 			popup = {
 				kind = "floating",
 			},
@@ -57,6 +58,21 @@ return {
 				pattern = "Neogit*",
 				callback = function()
 					vim.opt_local.number = true
+				end,
+			})
+			-- Refocus neogit window after commit (including pre-commit hooks)
+			vim.api.nvim_create_autocmd("User", {
+				pattern = "NeogitCommitComplete",
+				callback = function()
+					-- Find the neogit window and focus it
+					for _, win in ipairs(vim.api.nvim_list_wins()) do
+						local buf = vim.api.nvim_win_get_buf(win)
+						local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+						if ft == "NeogitStatus" then
+							vim.api.nvim_set_current_win(win)
+							break
+						end
+					end
 				end,
 			})
 		end,

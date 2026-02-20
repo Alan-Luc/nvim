@@ -24,3 +24,5 @@ set.spelllang = "en_ca"
 set.hlsearch = true
 set.incsearch = true
 set.cursorline = true
+set.splitright = true
+set.splitbelow = true

@@ -1,5 +1,11 @@
 return {
 	"ibhagwan/fzf-lua",
+	config = function(_, opts)
+		-- Set title colors (dragonRed from kanagawa-paper-ink)
+		vim.api.nvim_set_hl(0, "FzfLuaPreviewTitle", { fg = "#c4746e" })
+		vim.api.nvim_set_hl(0, "FzfLuaTitle", { fg = "#c4746e" })
+		require("fzf-lua").setup(opts)
+	end,
 	opts = {
 		{ "telescope", "default" },
 		fzf_opts = {
@@ -13,7 +19,29 @@ return {
 		},
 		winopts = {
 			preview = {
+				-- layout = "vertical",
+				-- vertical = "up:60%",
 				horizontal = "right:60%",
+			},
+		},
+		previewers = {
+			builtin = {
+				title_fnamemodify = function(s)
+					local path = require("fzf-lua.path")
+					-- Expand ~ and make relative to cwd
+					local abs = vim.fn.expand(s)
+					local cwd = vim.fn.getcwd()
+					return path.relative_to(abs, cwd) or s
+				end,
+			},
+		},
+		actions = {
+			files = {
+				["ctrl-v"] = {
+					fn = function(selected, opts)
+						require("fzf-lua").actions.file_vsplit(selected, opts)
+					end,
+				},
 			},
 		},
 		files = {
@@ -61,7 +89,7 @@ return {
 			function()
 				require("fzf-lua").live_grep_native({
 					fzf_cli_args = "--nth 2..",
-					resume = true,
+					-- resume = true,
 				})
 			end,
 			mode = "n",
@@ -70,10 +98,25 @@ return {
 		{
 			"gd",
 			function()
-				require("fzf-lua").lsp_definitions({
+				local FzfLua = require("fzf-lua")
+				FzfLua.lsp_definitions({
 					ignore_current_line = true,
 					sync = true,
 					jump1 = true,
+				})
+			end,
+			mode = "n",
+			desc = "lsp defs",
+		},
+		{
+			"gv",
+			function()
+				local FzfLua = require("fzf-lua")
+				FzfLua.lsp_definitions({
+					ignore_current_line = true,
+					sync = true,
+					jump1 = true,
+					jump1_action = FzfLua.actions.file_vsplit,
 				})
 			end,
 			mode = "n",
@@ -121,9 +164,17 @@ return {
 		},
 		{
 			"<leader>ca",
-			":lua require'fzf-lua'.lsp_code_actions({ winopts = {relative='cursor',row=1.01, col=0, height=0.2, width=0.4} })<cr>",
+			":lua require'fzf-lua'.lsp_code_actions({ winopts = {relative='cursor',row=1.01, col=0, height=0.2, width=0.4} })<CR>",
 			mode = "n",
 			desc = "code actions",
+		},
+		{
+			"<leader>g",
+			function()
+				require("fzf-lua").git_status()
+			end,
+			mode = "n",
+			desc = "git status",
 		},
 	},
 }
