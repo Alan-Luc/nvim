@@ -127,28 +127,6 @@ return {
       vim.cmd("startinsert")
     end
 
-    local function ensure_visible()
-      if not buf_visible() then
-        opencode.toggle()
-      end
-      focus_terminal()
-    end
-
-    local function after_server_ready(cb)
-      local ok, server = pcall(require, "opencode.server")
-      if ok and server.connected then
-        cb()
-        return
-      end
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "OpencodeEvent:server.connected",
-        once = true,
-        callback = function ()
-          vim.schedule(cb)
-        end,
-      })
-    end
-
     -- Kick off the SSE subscription so OpencodeEvent:* autocmds fire even
     -- when the user only toggles the terminal (never calling ask/command).
     local sse_requested = false
@@ -162,6 +140,13 @@ return {
       end)
     end
 
+    local function ensure_visible()
+      if not buf_visible() then
+        opencode.toggle()
+      end
+      focus_terminal()
+    end
+
     local function continue()
       opencode.toggle()
       if buf_visible() then
@@ -172,16 +157,12 @@ return {
 
     local function fresh()
       ensure_visible()
-      after_server_ready(function ()
-        opencode.command("session.new")
-      end)
+      opencode.command("session.new")
     end
 
     local function resume()
       ensure_visible()
-      after_server_ready(function ()
-        require("opencode.ui.select_session").select_session()
-      end)
+      require("opencode.ui.select_session").select_session()
     end
 
     vim.keymap.set("n", "<A-m>", continue, { desc = "Opencode: toggle" })
@@ -230,12 +211,15 @@ return {
             { buffer = args.buf, noremap = true, silent = true, desc = desc }
           )
         end
-        tmap("<A-m>", continue, "Opencode: toggle")
-        tmap("<A-S-m>", fresh, "Opencode: fresh session")
-        tmap("<leader>c", resume, "Opencode: resume picker")
-
         -- Double-Escape → normal mode, single Escape → TUI interrupt.
+        -- Guard: cancel pending Esc when an Alt-prefixed key fires so that
+        -- <A-m> (toggle) and <A-S-m> (fresh) are never misread as an
+        -- interrupt followed by a stray keystroke.
         local esc_pending = false
+        local function cancel_esc()
+          esc_pending = false
+        end
+
         tmap("<Esc>", function ()
           if esc_pending then
             esc_pending = false
@@ -249,6 +233,19 @@ return {
             vim.api.nvim_chan_send(vim.bo[args.buf].channel, "\27")
           end, 200)
         end, "double-Esc: normal mode, single-Esc: interrupt")
+
+        -- Wrap Alt-bound actions so they always cancel any pending Esc
+        -- before executing. This prevents the 200ms deferred interrupt
+        -- from firing after an Alt toggle.
+        local function with_cancel_esc(fn)
+          return function()
+            cancel_esc()
+            fn()
+          end
+        end
+        tmap("<A-m>", with_cancel_esc(continue), "Opencode: toggle")
+        tmap("<A-S-m>", with_cancel_esc(fresh), "Opencode: fresh session")
+        tmap("<leader>c", with_cancel_esc(resume), "Opencode: resume picker")
       end,
     })
 
@@ -269,21 +266,7 @@ return {
       end,
     })
 
-    -- Auto-reload buffers when leaving the opencode terminal.
-    vim.api.nvim_create_autocmd("BufLeave", {
-      group = vim.api.nvim_create_augroup("OpencodeAutoReload", { clear = true }),
-      callback = function(args)
-        if args.buf ~= oc_bufnr then
-          return
-        end
-        vim.schedule(function()
-          vim.cmd("checktime")
-        end)
-      end,
-    })
-
     -- "Needs attention" notification on idle transition.
-    local notify = require("alan.opencode_notify")
     local idle_notified = false
     vim.api.nvim_create_autocmd("User", {
       pattern = "OpencodeEvent:*",
@@ -292,7 +275,9 @@ return {
         if st == "idle" and not idle_notified then
           idle_notified = true
           if vim.api.nvim_get_current_buf() ~= oc_bufnr then
-            notify.ping()
+            vim.schedule(function()
+              vim.notify("Opencode needs your attention", vim.log.levels.WARN, { title = "Opencode" })
+            end)
           end
         elseif st ~= "idle" then
           idle_notified = false
