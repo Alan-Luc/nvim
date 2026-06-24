@@ -11,6 +11,13 @@ vim.lsp.config("ruff", {
 -- ty: Python type checking + hover
 vim.lsp.config("ty", {})
 
+-- Diagnostics: inline virtual text for info/warn, virtual lines for errors.
+vim.diagnostic.config({
+  virtual_text = { severity = { min = "INFO", max = "WARN" } },
+  virtual_lines = { current_line = true, severity = { min = "ERROR" } },
+  float = { source = true },
+})
+
 -- Disable ruff hover so ty provides type information on hover
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
@@ -63,9 +70,4 @@ return {
     },
     opts_extend = { "sources.default" },
   },
-  vim.diagnostic.config({
-    virtual_text = { severity = { min = "INFO", max = "WARN" } },
-    virtual_lines = { current_line = true, severity = { min = "ERROR" } },
-    float = { source = true },
-  }),
 }

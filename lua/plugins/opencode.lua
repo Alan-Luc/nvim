@@ -13,7 +13,7 @@ return {
         height = h,
         row = math.floor((editor_h - h) / 2),
         col = math.floor((vim.o.columns - w) / 2),
-        border = "rounded",
+        border = "rounded"
       }
     end
 
@@ -29,11 +29,7 @@ return {
     -- appear in the TUI `/` autocomplete without manual per-repo setup.
     -- Files are written to a temp dir and surfaced via OPENCODE_CONFIG_DIR.
     local function generate_skill_commands(root)
-      local search = {
-        root .. "/.claude/skills",
-        root .. "/.opencode/skills",
-        root .. "/.agents/skills",
-      }
+      local search = { root .. "/.claude/skills", root .. "/.opencode/skills", root .. "/.agents/skills" }
       local hash = vim.fn.sha256(root):sub(1, 8)
       local cmddir = string.format("/tmp/opencode-skills-%s/commands", hash)
       vim.fn.mkdir(cmddir, "p")
@@ -61,8 +57,7 @@ return {
           if #desc > 120 then desc = desc:sub(1, 117) .. "..." end
           local body = string.format(
             "---\ndescription: %s\nagent: build\n---\n\nLoad and execute the `%s` skill. $ARGUMENTS\n",
-            desc ~= "" and desc or ("Run the " .. name .. " skill"),
-            name
+            desc ~= "" and desc or ("Run the " .. name .. " skill"), name
           )
           vim.fn.writefile(vim.split(body, "\n"), cmddir .. "/" .. name .. ".md")
         end
@@ -78,19 +73,17 @@ return {
       local config_dir = root and generate_skill_commands(root) or nil
       local exports = ""
       if config_dir then
-        exports = string.format(
-          "export OPENCODE_CONFIG_DIR=%s && ", vim.fn.shellescape(config_dir))
+        exports = string.format("export OPENCODE_CONFIG_DIR=%s && ", vim.fn.shellescape(config_dir))
       end
       if root then
-        return string.format("cd %s && %sopencode --continue --port",
-          vim.fn.shellescape(root), exports)
+        return string.format("cd %s && %sopencode --continue --port", vim.fn.shellescape(root), exports)
       end
       return string.format("%sopencode --continue --port", exports)
     end
 
     vim.g.opencode_opts = {
       events = {
-        permissions = { enabled = false },
+        permissions = { enabled = false }
       },
       server = {
         start = function ()
@@ -101,8 +94,8 @@ return {
         end,
         toggle = function ()
           require("opencode.terminal").toggle(opencode_cmd(), float_opts())
-        end,
-      },
+        end
+      }
     }
   end,
   config = function ()
@@ -110,9 +103,7 @@ return {
     local oc_bufnr
 
     local function buf_visible()
-      return oc_bufnr
-        and vim.api.nvim_buf_is_valid(oc_bufnr)
-        and #vim.fn.win_findbuf(oc_bufnr) > 0
+      return oc_bufnr and vim.api.nvim_buf_is_valid(oc_bufnr) and #vim.fn.win_findbuf(oc_bufnr) > 0
     end
 
     local function focus_terminal()
@@ -165,8 +156,16 @@ return {
       require("opencode.ui.select_session").select_session()
     end
 
+    local function restart()
+      pcall(function ()
+        require("opencode.terminal").close()
+      end)
+      vim.defer_fn(continue, 50)
+    end
+
     vim.keymap.set("n", "<A-m>", continue, { desc = "Opencode: toggle" })
     vim.keymap.set("n", "<A-S-m>", fresh, { desc = "Opencode: fresh session" })
+    vim.keymap.set("n", "<A-r>", restart, { desc = "Opencode: restart (reload config)" })
     vim.keymap.set("n", "<leader>c", resume, { desc = "Opencode: resume picker" })
 
     -- Capture the opencode terminal buffer and mirror toggles in terminal mode.
@@ -185,7 +184,7 @@ return {
           once = true,
           callback = function ()
             oc_bufnr = nil
-          end,
+          end
         })
 
         -- The plugin's TermRequest redraw hack enters insert then feedkeys
@@ -202,19 +201,12 @@ return {
               vim.api.nvim_del_autocmd(redraw_id)
               focus_terminal()
             end
-          end,
+          end
         })
 
         local function tmap(lhs, fn, desc)
-          vim.keymap.set(
-            "t", lhs, fn,
-            { buffer = args.buf, noremap = true, silent = true, desc = desc }
-          )
+          vim.keymap.set("t", lhs, fn, { buffer = args.buf, noremap = true, silent = true, desc = desc })
         end
-        -- Double-Escape → normal mode, single Escape → TUI interrupt.
-        -- Guard: cancel pending Esc when an Alt-prefixed key fires so that
-        -- <A-m> (toggle) and <A-S-m> (fresh) are never misread as an
-        -- interrupt followed by a stray keystroke.
         local esc_pending = false
         local function cancel_esc()
           esc_pending = false
@@ -232,27 +224,26 @@ return {
             esc_pending = false
             vim.api.nvim_chan_send(vim.bo[args.buf].channel, "\27")
           end, 200)
-        end, "double-Esc: normal mode, single-Esc: interrupt")
+        end, "double-Esc: normal mode, single-Esc: interrupt"
+        )
 
-        -- Wrap Alt-bound actions so they always cancel any pending Esc
-        -- before executing. This prevents the 200ms deferred interrupt
-        -- from firing after an Alt toggle.
         local function with_cancel_esc(fn)
-          return function()
+          return function ()
             cancel_esc()
             fn()
           end
         end
         tmap("<A-m>", with_cancel_esc(continue), "Opencode: toggle")
         tmap("<A-S-m>", with_cancel_esc(fresh), "Opencode: fresh session")
+        tmap("<A-r>", with_cancel_esc(restart), "Opencode: restart (reload config)")
         tmap("<leader>c", with_cancel_esc(resume), "Opencode: resume picker")
-      end,
+      end
     })
 
     -- Hide line numbers and signcolumn in the float.
     vim.api.nvim_create_autocmd("BufWinEnter", {
       group = vim.api.nvim_create_augroup("OpencodeTermOpts", { clear = true }),
-      callback = function(args)
+      callback = function (args)
         if args.buf ~= oc_bufnr then
           return
         end
@@ -263,7 +254,7 @@ return {
         vim.wo[win].number = false
         vim.wo[win].relativenumber = false
         vim.wo[win].signcolumn = "no"
-      end,
+      end
     })
 
     -- "Needs attention" notification on idle transition.
@@ -275,14 +266,14 @@ return {
         if st == "idle" and not idle_notified then
           idle_notified = true
           if vim.api.nvim_get_current_buf() ~= oc_bufnr then
-            vim.schedule(function()
+            vim.schedule(function ()
               vim.notify("Opencode needs your attention", vim.log.levels.WARN, { title = "Opencode" })
             end)
           end
         elseif st ~= "idle" then
           idle_notified = false
         end
-      end,
+      end
     })
-  end,
+  end
 }

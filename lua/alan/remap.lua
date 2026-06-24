@@ -11,8 +11,8 @@ keymap("n", "<leader>4", ":tabclose<CR>", opts)
 keymap("n", "<C-d>", "<C-d>zz", opts)
 keymap("n", "<C-u>", "<C-u>zz", opts)
 keymap("n", "<S-j>", "mzJ`z", opts)
-keymap("n", "<n>", "nzzzv", opts)
-keymap("n", "<N>", "Nzzzv", opts)
+keymap("n", "n", "nzzzv", opts)
+keymap("n", "N", "Nzzzv", opts)
 -- keymap("x", '<leader>p', "\"_dP", opts)
 keymap("n", "<leader>x", "<cmd>!chmod +x %<CR>", opts)
 
@@ -23,7 +23,7 @@ keymap("v", "K", ":m '<-2<CR>gv=gv", opts)
 -- copy to clipboard
 keymap("n", "<leader>y", '"+y', opts)
 keymap("v", "<leader>y", '"+y', opts)
-keymap("n", "<leader>y", '"+Y', opts)
+keymap("n", "<leader>Y", '"+Y', opts)
 
 -- paste from clipboard
 keymap("i", "<C-S-v>", "<C-r>+", opts)

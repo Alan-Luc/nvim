@@ -22,9 +22,13 @@ return {
 				enable = true, -- Enable indentation based on tree-sitter
 			},
 
-			autopairs = {
-				enable = true, -- Enable integration with nvim-autopairs
-			},
+		autopairs = {
+			enable = true, -- Enable integration with nvim-autopairs
+		},
+
+		endwise = {
+			enable = true, -- Enable nvim-treesitter-endwise
+		},
 		})
 	end,
 }

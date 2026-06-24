@@ -30,13 +30,13 @@ return {
         -- To organize the imports.
         "ruff_organize_imports"
       },
-      javascript = { "prettierd", args = { "--config", ".prettierrc" } },
-      javascriptreact = { "prettierd", args = { "--config", ".prettierrc" } },
-      typescript = { "prettierd", args = { "--config", ".prettierrc" } },
-      typescriptreact = { "prettierd", args = { "--config", ".prettierrc" } },
-      json = { "prettierd", args = { "--config", ".prettierrc" } },
-      yaml = { "prettierd", args = { "--config", ".prettierrc" } },
-      yml = { "prettierd", args = { "--config", ".prettierrc" } },
+      javascript = { "prettierd" },
+      javascriptreact = { "prettierd" },
+      typescript = { "prettierd" },
+      typescriptreact = { "prettierd" },
+      json = { "prettierd" },
+      yaml = { "prettierd" },
+      yml = { "prettierd" },
       vue = { "prettierd" },
       go = { "gofmt", "goimports", "golines" },
       rust = { "rustfmt" },
@@ -61,7 +61,7 @@ return {
 
       return {
         timeout_ms = 1000,
-        lsp_fallback = true
+        lsp_format = "fallback"
         -- quiet = true,
       }
     end
